@@ -232,3 +232,68 @@ legend_ax.legend(
 )
 st.pyplot(legend_fig)
 
+# ========== 6. Plotly Express Histogram with Checkbox ==========
+
+st.subheader("6. Plotly Express Histogram: Price Distribution")
+
+use_checkbox = st.checkbox("Show only cars from 2018 and later")
+
+if use_checkbox:
+    data_plotly = df[df['model_year'] >= 2018]
+else:
+    data_plotly = df.copy()
+
+fig = px.histogram(
+    data_plotly,
+    x="price",
+    nbins=30,
+    title="Histogram of Car Prices",
+    labels={"price": "Price ($)"},
+    color_discrete_sequence=["indianred"]
+)
+fig.update_layout(bargap=0.1)
+
+st.plotly_chart(fig, use_container_width=True)
+
+
+# ========== 7. Plotly Express Scatter Plot with Filters ==========
+
+st.subheader("7. Plotly Scatter Plot: Price vs. Odometer with Filters")
+
+# Create multiselects for filter options
+selected_type = st.multiselect("Select Car Type", options=sorted(df['type'].dropna().unique()), default=None)
+selected_year = st.multiselect("Select Model Year", options=sorted(df['model_year'].dropna().unique()), default=None)
+selected_mileage = st.multiselect("Select Mileage Category", options=sorted(df['mileage_category'].dropna().unique()), default=None)
+selected_condition = st.multiselect("Select Condition", options=sorted(df['condition'].dropna().unique()), default=None)
+selected_color = st.multiselect("Select Paint Color", options=sorted(df['paint_color'].dropna().unique()), default=None)
+
+# Apply filters
+filtered_plot_df = df.copy()
+if selected_type:
+    filtered_plot_df = filtered_plot_df[filtered_plot_df['type'].isin(selected_type)]
+if selected_year:
+    filtered_plot_df = filtered_plot_df[filtered_plot_df['model_year'].isin(selected_year)]
+if selected_mileage:
+    filtered_plot_df = filtered_plot_df[filtered_plot_df['mileage_category'].isin(selected_mileage)]
+if selected_condition:
+    filtered_plot_df = filtered_plot_df[filtered_plot_df['condition'].isin(selected_condition)]
+if selected_color:
+    filtered_plot_df = filtered_plot_df[filtered_plot_df['paint_color'].isin(selected_color)]
+
+# Show scatter plot
+if not filtered_plot_df.empty:
+    scatter_fig = px.scatter(
+        filtered_plot_df,
+        x='odometer',
+        y='price',
+        color='paint_color',
+        hover_data=['model', 'type', 'model_year', 'condition'],
+        title="Price vs. Odometer (Filtered)",
+        labels={'odometer': 'Mileage', 'price': 'Price ($)'}
+    )
+    scatter_fig.update_traces(marker=dict(size=7, opacity=0.6))
+    st.plotly_chart(scatter_fig, use_container_width=True)
+else:
+    st.warning("No data matches the selected filters.")
+
+
