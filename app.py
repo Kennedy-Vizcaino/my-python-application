@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 import distinctipy
 
-# App title
+# Application title
 st.title("🚗 Car Sales Visualizations Dashboard 🏁 ")
 
-# Load your dataset (update the path as needed)
+#the dataset
 @st.cache_data
 def load_data():
-    df = pd.read_csv("car_data.csv")  # Change this to match your dataset name
+    df = pd.read_csv("vehicles_us.csv")  
 
     # Create mileage category
     def categorize_mileage(odometer):
