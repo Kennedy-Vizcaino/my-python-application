@@ -104,6 +104,7 @@ st.pyplot(plt.gcf())
 
 # ========== 4. Scatter Plot: SUV ==========
 st.subheader("4. Price vs. Mileage – SUV (Red & Blue, 2016–2019)")
+
 filtered_df = df[
     (df['model_year'] >= 2016) &
     (df['model_year'] <= 2019) &
@@ -115,6 +116,7 @@ filtered_df = df[
 
 unique_models = sorted(filtered_df['model'].unique())
 palette = dict(zip(unique_models, [distinctipy.get_hex(c) for c in distinctipy.get_colors(len(unique_models))]))
+
 fig, axes = plt.subplots(2, 4, figsize=(22, 10), sharex=True, sharey=True)
 fig.subplots_adjust(hspace=0.4, wspace=0.25)
 
@@ -150,8 +152,24 @@ fig.suptitle("Price vs Mileage by Model (SUV, Red & Blue, 2016–2019)", fontsiz
 plt.tight_layout(rect=[0, 0.08, 1, 0.95])
 st.pyplot(fig)
 
+# ➕ Add Shared Legend
+legend_fig, legend_ax = plt.subplots(figsize=(min(len(unique_models) * 0.7, 20), 2))
+legend_ax.axis("off")
+legend_handles = [Patch(color=palette[model], label=model) for model in unique_models]
+legend_ax.legend(
+    handles=legend_handles,
+    title="Car Model",
+    loc="center",
+    ncol=6 if len(unique_models) <= 30 else 10,
+    fontsize=9,
+    title_fontsize=11,
+    frameon=False
+)
+st.pyplot(legend_fig)
+
 # ========== 5. Scatter Plot: Sedan ==========
 st.subheader("5. Price vs. Mileage – Sedan (Black & White, 2016–2019)")
+
 filtered_df = df[
     (df['model_year'] >= 2016) &
     (df['model_year'] <= 2019) &
@@ -163,10 +181,12 @@ filtered_df = df[
 
 unique_models = sorted(filtered_df['model'].unique())
 palette = dict(zip(unique_models, [distinctipy.get_hex(c) for c in distinctipy.get_colors(len(unique_models))]))
+
 fig, axes = plt.subplots(2, 4, figsize=(22, 10), sharex=True, sharey=True)
 fig.subplots_adjust(hspace=0.4, wspace=0.25)
 
 colors = ['black', 'white']
+years = [2016, 2017, 2018, 2019]
 
 for row_idx, color in enumerate(colors):
     for col_idx, year in enumerate(years):
@@ -196,3 +216,19 @@ for row_idx, color in enumerate(colors):
 fig.suptitle("Price vs Mileage by Model (Sedan, Black & White, 2016–2019)", fontsize=16)
 plt.tight_layout(rect=[0, 0.08, 1, 0.95])
 st.pyplot(fig)
+
+# ➕ Add Shared Legend
+legend_fig, legend_ax = plt.subplots(figsize=(min(len(unique_models) * 0.7, 20), 2))
+legend_ax.axis("off")
+legend_handles = [Patch(color=palette[model], label=model) for model in unique_models]
+legend_ax.legend(
+    handles=legend_handles,
+    title="Car Model",
+    loc="center",
+    ncol=6 if len(unique_models) <= 30 else 10,
+    fontsize=9,
+    title_fontsize=11,
+    frameon=False
+)
+st.pyplot(legend_fig)
+
