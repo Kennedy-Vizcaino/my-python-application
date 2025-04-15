@@ -1,12 +1,8 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-from eda_plots import (
-    plot_price_distribution,
-    plot_count_by_year,
-    plot_suv_scatter,
-    plot_sedan_scatter)
 
+# Load data
 df = pd.read_csv('vehicles_us.csv')
 
 # Clean data
@@ -28,20 +24,15 @@ filtered_df = df[
     (df['condition'].isin(conditions))
 ]
 
-# Main title
+# Title
 st.title("🚗 Used Cars Dashboard")
 
-# Interactive Plotly charts
+# Plotly Charts
 fig_price = px.histogram(filtered_df, x='price', nbins=50, title='Price Distribution')
 st.plotly_chart(fig_price)
 
 fig_year_price = px.scatter(filtered_df, x='model_year', y='price', color='condition', title='Model Year vs Price by Condition')
 st.plotly_chart(fig_year_price)
-
-# Static Matplotlib/Seaborn charts
-st.subheader("Histograms & Count Plots")
-plot_price_distribution()
-plot_count_by_year()
 
 st.subheader("SUV Scatter Plot (Red & Blue)")
 plot_suv_scatter()
