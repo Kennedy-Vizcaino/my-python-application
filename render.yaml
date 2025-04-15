@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: used-cars-dashboard
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: streamlit run app.py
