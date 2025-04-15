@@ -4,6 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 import distinctipy
+import plotly.express as px
+
 
 # Application title
 st.title("🚗 Car Sales Visualizations Dashboard 🏁 ")
